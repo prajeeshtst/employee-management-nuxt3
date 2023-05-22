@@ -162,7 +162,7 @@ onMounted(() => {
     componentTitle = "Edit";
     editMode.value = true;
     customForm = true;
-    console.log("#######", employeeData);
+     
   }
 });
 
@@ -171,11 +171,9 @@ const { isCreateButtonDisabled } = useCreateButtonState(
   error
 );
 
-console.log("isCreateButtonDisabled error ",error);
-
+ 
 const addValueToEmployeeList = () => {
-  console.log("edit", editMode);
-  router.push("/");
+   router.push("/");
   editMode.value
     ? filtersStore.editValueToEmployeeList(employeeData.value)
     : filtersStore.addValueToEmployeeList(employeeData.value);
@@ -186,10 +184,8 @@ const goBack = () => {
 };
 const inputfrom = (event) => {
   employeeData.id = event.target.value;
-  console.log("eventsss..", employeeData.id);
-
-  console.log("event..", event.target.value);
-};
+ 
+ };
 
 </script>
 

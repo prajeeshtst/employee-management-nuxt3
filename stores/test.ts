@@ -8,8 +8,7 @@ export const useFiltersStore = defineStore(
     let customEmployee = ref({});
 
     function addValueToEmployeeList(value:any) {
-      console.log('inside add',value)
-
+ 
       const isEmpty = Object.values(value).every((x) => x === null || x === "");
       if (!isEmpty) {
         filtersList.value.push(value);
@@ -19,15 +18,13 @@ export const useFiltersStore = defineStore(
       }
     }
     function editValueToEmployeeList(value:any) {
-      console.log('inside edit',value)
-      filtersList.value.map(obj => value.find(o => o.id === obj.id) || obj);
+       filtersList.value.map(obj => value.find(o => o.id === obj.id) || obj);
       router.push('/')
     }
     
     function deleteEmployee(id:any) {
       const index = filtersList.value.findIndex((emp) => emp.id == id);
-      console.log('index',index)
-      filtersList.value.splice(index, 1);
+       filtersList.value.splice(index, 1);
     }
     function findEmployee(id:any){
       const employee = filtersList.value.filter(obj => {
