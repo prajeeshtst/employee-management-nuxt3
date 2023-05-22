@@ -15,6 +15,8 @@ router.push('/employee/add')
 </script>
 
 <template>
+   <custom-modal></custom-modal>
+
   <div class="table-title">
     Employee Management
     <p class="sub-title">Manage all employees</p>
@@ -26,4 +28,5 @@ router.push('/employee/add')
   <div class="custom-container">
     <custom-table :filtersList="filtersList" :headings="tableHeadings"/>
   </div>
+
 </template>

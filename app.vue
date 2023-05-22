@@ -1,5 +1,8 @@
 <template>
-  <div class="card">
+   <div>
+     <img class="mt-5 logo" src="https://techgentsia.com/images/logo.png" alt="">
+   </div>
+  <div class="card mt-5">
     <div class="card-body">
       
       <NuxtPage />
@@ -69,5 +72,8 @@ useHead({
 .add-employee {
   float: right;
   margin-left: 57 rem;
+}
+.logo{
+  margin-left: 6rem;
 }
 </style>

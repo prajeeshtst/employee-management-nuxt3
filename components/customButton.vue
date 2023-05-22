@@ -1,8 +1,7 @@
 <template>
-  <div>
+ 
   <button :type="customType" :class="customClass"  @click="onClick" :style="style" :disabled="disabled"> <slot></slot></button>
-  </div>
-</template>
+ </template>
 
 <script setup>
 const props = defineProps({

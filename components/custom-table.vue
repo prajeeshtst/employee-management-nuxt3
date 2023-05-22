@@ -1,6 +1,15 @@
 <template>
   <div>
-    <table class="table table-hover data-table">
+    <custom-modal
+      :showModal="showModal"
+      :modalTitle="'Confirmation'"
+      :modalData="`Are you sure want to delete ${customEmployee.name}`"
+      :confirmButton="'Yes'"
+      :cancelButton="'No'"
+      @confirmPopup="confirmDelete"
+      @cancelPopup="closeModal"
+    ></custom-modal>
+    <table class="table table-hover data-table" v-if="filtersList.length > 0">
       <thead>
         <tr>
           <th scope="col" v-for="(column, index) in headings" :key="index">
@@ -23,32 +32,35 @@
             >
           </td>
           <td>
-             <custom-button
-              style="margin-top: 3px;"
+            <custom-button
+              style="margin-top: 3px; margin:4px;"
               @click="editEmployee(employee)"
               :customClass="'btn btn-success btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:pen" color="black" />   </custom-button>
+              <Icon name="uil:pen" color="black" />
+            </custom-button>
             <custom-button
-
-              style="margin-top: 3px;"
+              style="margin-top: 3px; margin:4px;"
               @click="viewEmployee(employee)"
               :customClass="'btn btn-info btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:eye" color="black" />   </custom-button>
-              <custom-button
-              style="margin-top: 3px;"
+              <Icon name="uil:eye" color="black" />
+            </custom-button>
+            <custom-button
+              style="margin-top: 3px; margin:4px;"
               @click="deleteEmployee(employee)"
               :customClass="'btn btn-danger btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:trash" color="black" />   </custom-button>
+              <Icon name="uil:trash" color="black" />
+            </custom-button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div class="no-data" v-else>{{noDataMessage}}</div>
   </div>
 </template>
 
@@ -59,18 +71,32 @@ const props = defineProps({
   filtersList: Array,
   headings: Array,
 });
+let showModal = ref(false);
+let customEmployee = ref({});
+let noDataMessage = ref("No users found!")
 const router = useRouter();
 const filtersStore = useFiltersStore();
-const deleteEmployee =(employee)=>{
-  console.log('employee',employee)
-  filtersStore.deleteEmployee(employee.id)
-}
-const editEmployee = (emp) =>{
-   router.push({
+const deleteEmployee = (employee) => {
+  showModal.value = true;
+  customEmployee = employee;
+  console.log("employee", customEmployee);
+  // filtersStore.deleteEmployee(employee.id)
+};
+const confirmDelete = (value) => {
+  if (value) {
+    filtersStore.deleteEmployee(customEmployee.id);
+    showModal.value = false;
+  }
+};
+const closeModal = (value) => {
+  showModal.value = value;
+};
+const editEmployee = (emp) => {
+  router.push({
     path: `/employee/add`,
-    query: { id: emp.id }
+    query: { id: emp.id },
   });
-}
+};
 const viewEmployee = async (emp) => {
   filtersStore.setCustomEmployee(emp);
   // const { setCustomEmployee } = filtersStore;
@@ -81,4 +107,9 @@ const viewEmployee = async (emp) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.no-data {
+  margin-top: 6rem;
+  margin-left: 27rem;
+}
+</style>

@@ -1,5 +1,4 @@
 <template>
-   {{propData}}
   <input
     type="email"
     class="form-control"

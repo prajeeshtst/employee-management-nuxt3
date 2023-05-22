@@ -1,11 +1,9 @@
 <template>
   <div class="table-title">
-    
-    {{componentTitle}} Employee
-     <!-- <input v-model="inputVal" />
-    <button @click="addValueToFilterList(inputVal)">+</button> -->
+    {{ componentTitle }} Employee
+  
 
-    <p class="sub-title">Add a new employee to the team</p>
+    <p class="sub-title">Employee Management</p>
     <div class="add-employee">
       <custom-button
         :onClick="goBack"
@@ -17,7 +15,7 @@
       >
     </div>
   </div>
-   <div class="container card-register">
+  <div class="container card-register">
     <form
       class="reg-form"
       @submit.prevent="addValueToEmployeeList(employeeData)"
@@ -25,25 +23,38 @@
     >
       <div class="row">
         <div class="col-md-4">
-          <label for="inputEmail4" class="custom-labels"
-            >EmpID </label
-          >
-          <custom-text v-model="employeeData.id" :propData="employeeData.id"></custom-text>
+          <custom-label>Emp.ID</custom-label>
+          <custom-text
+            v-model="employeeData.id"
+            :propData="employeeData.id"
+            :disableField="editMode"
+            :key="editMode"
+          ></custom-text>
         </div>
         <div class="col-md-8">
-          <label for="inputEmail4" class="custom-labels">Name </label>
-          <custom-text v-model="employeeData.name" :propData="employeeData.name"></custom-text>
+                   <custom-label>Name</custom-label>
+          <custom-text
+            v-model="employeeData.name"
+            :propData="employeeData.name"
+          ></custom-text>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
-          <label for="inputEmail4" class="custom-labels">Email</label>
-          <email-field v-model="employeeData.email" :propData="employeeData.email" />
+                   <custom-label>Email</custom-label>
+
+          <email-field
+            v-model="employeeData.email"
+            :propData="employeeData.email"
+          />
         </div>
         <div class="col-md-5" style="margin-top: 42px">
-          <label for="cg" class="custom-labels">Gender</label>
+                    <custom-label>Gender</custom-label>
+
           <custom-check-box
             :gender="['Male', 'Female']"
+            :key="editMode"
+            :editMode="editMode"
             v-model="employeeData.gender"
             :propData="employeeData.gender"
           />
@@ -51,43 +62,59 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <label for="inputState" class="custom-labels">Status</label>
+          <custom-label>Status</custom-label>
           <custom-select
+            :key="editMode"
+            :editMode="editMode"
             v-model="employeeData.status"
             :options="['Active', 'Disabled']"
             :propData="employeeData.status"
           />
         </div>
         <div class="col-md-3">
-          <label for="inputZip" class="custom-labels">Designation</label>
-          <custom-text v-model="employeeData.designation" :propData="employeeData.designation"></custom-text>
+          <custom-label>Designation</custom-label>
+          <custom-text
+            v-model="employeeData.designation"
+            :propData="employeeData.designation"
+          ></custom-text>
         </div>
         <div class="col-md-3">
-          <label for="inputZip" class="custom-labels">Team</label>
-          <custom-text v-model="employeeData.team" :propData="employeeData.team"></custom-text>
+          <custom-label>Team</custom-label>
+          <custom-text
+            v-model="employeeData.team"
+            :propData="employeeData.team"
+          ></custom-text>
         </div>
       </div>
       <div class="address">
         <div class="form-group">
-          <label for="inputAddress" class="custom-labels">Address</label>
-          <custom-text v-model="employeeData.address1" :propData="employeeData.address1"></custom-text>
+          <custom-label>Address1</custom-label>
+          <custom-text
+            v-model="employeeData.address1"
+            :propData="employeeData.address1"
+          ></custom-text>
         </div>
         <div class="form-group">
-          <label for="inputAddress2" class="custom-labels">Address 2</label>
-          <custom-text v-model="employeeData.address2" :propData="employeeData.address2"></custom-text>
+          <custom-label>Address2</custom-label>
+          <custom-text
+            v-model="employeeData.address2"
+            :propData="employeeData.address2"
+          ></custom-text>
         </div>
         <div class="form-group col-md-6">
-          <label for="inputCity" class="custom-labels">City</label>
-          <custom-text v-model="employeeData.city" :propData="employeeData.city"></custom-text>
+          <custom-label>City</custom-label>
+          <custom-text
+            v-model="employeeData.city"
+            :propData="employeeData.city"
+          ></custom-text>
         </div>
       </div>
-      <custom-button
+       <custom-button
         :customClass="'btn btn-primary'"
         :customType="'submit'"
         style="margin-top: 1rem"
-         
       >
-        {{componentTitle}} Employee</custom-button
+        {{ componentTitle }} Employee</custom-button
       >
     </form>
   </div>
@@ -115,35 +142,45 @@ let employeeData = ref({
 });
 
 const inputVal = ref("");
-let componentTitle = ref("Create")
-let editMode = ref(false)
-let customForm= ref(false)
+let componentTitle = ref("Create");
+let editMode = ref(false);
+let customForm = ref(false);
 const filtersStore = useFiltersStore();
 const { error } = useFormValidation();
 onMounted(() => {
-  console.log('&&&&',employeeData)
-  if(router.currentRoute&&router.currentRoute._value&&router.currentRoute._value.query&&router.currentRoute._value.query.id){
-   const singleEmployee= filtersStore.findEmployee(router.currentRoute._value.query.id);
-   employeeData.value = singleEmployee[0]
-   componentTitle = 'Edit'
-   editMode = true;
-   customForm = true;
-  console.log('#######',employeeData)
+   
+  if (
+    router.currentRoute &&
+    router.currentRoute._value &&
+    router.currentRoute._value.query &&
+    router.currentRoute._value.query.id
+  ) {
+    const singleEmployee = filtersStore.findEmployee(
+      router.currentRoute._value.query.id
+    );
+    employeeData.value = singleEmployee[0];
+    componentTitle = "Edit";
+    editMode.value = true;
+    customForm = true;
+    console.log("#######", employeeData);
   }
-    })
- 
- 
-const { isCreateButtonDisabled } = useCreateButtonState(employeeData.value, error);
-console.log('useCreateButtonState(employeeData, error)')
+});
 
+const { isCreateButtonDisabled } = useCreateButtonState(
+  employeeData.value,
+  error
+);
+
+console.log("isCreateButtonDisabled error ",error);
 
 const addValueToEmployeeList = () => {
-  console.log("emp", employeeData.value);
-  router.push('/')
-  editMode?filtersStore.editValueToEmployeeList(employeeData.value):filtersStore.addValueToEmployeeList(employeeData.value);
-  
+  console.log("edit", editMode);
+  router.push("/");
+  editMode.value
+    ? filtersStore.editValueToEmployeeList(employeeData.value)
+    : filtersStore.addValueToEmployeeList(employeeData.value);
 };
- const { filtersList } = storeToRefs(filtersStore);
+const { filtersList } = storeToRefs(filtersStore);
 const goBack = () => {
   router.go(-1);
 };
@@ -153,6 +190,7 @@ const inputfrom = (event) => {
 
   console.log("event..", event.target.value);
 };
+
 </script>
 
 <style lang="scss" scoped>
