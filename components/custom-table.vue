@@ -73,7 +73,7 @@ const props = defineProps({
 });
 let showModal = ref(false);
 let customEmployee = ref({});
-let noDataMessage = ref("No users found!")
+let noDataMessage = ref("No employee found!")
 const router = useRouter();
 const filtersStore = useFiltersStore();
 const deleteEmployee = (employee) => {
