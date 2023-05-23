@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div style="background: #d1d5e1;">
      <img class="mt-5 logo" src="https://techgentsia.com/images/logo.png" alt="">
    </div>
   <div class="card mt-5">

@@ -27,7 +27,6 @@ const validateInput = () => {
 };
 // const validateInput = () => {
 //   error.value = input.value === "" ? "The Input field is required" : "";
-//   console.log("the error input", error.value);
-//   return { input, error, validateInput };
+ //   return { input, error, validateInput };
 // };
 </script>

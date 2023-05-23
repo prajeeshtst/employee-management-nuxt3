@@ -25,42 +25,68 @@
           <td>{{ employee.designation }}</td>
           <td>
             <Chip
-              :customClass="
-                employee.status === 'Active' ? 'chip primary' : 'chip secondary'
-              "
-              >{{ employee.status }}</Chip
+              :variant="
+                employee.status === 'Active' ? 'primary' : 'chip secondary' "
             >
+              <template #icon>
+                <Icon
+                  :name="
+                    employee.status === 'Active'
+                      ? 'wpf:online'
+                      : 'icomoon-free:blocked'
+                  "
+                  color="white"
+                />
+              </template>
+              <template #default>
+                <span>
+                  {{ employee.status }}
+                </span>
+              </template>
+            </Chip>
           </td>
           <td>
             <custom-button
-              style="margin-top: 3px; margin:4px;"
+              :variant="'success'"
+              :rounded="true"
+              :size="'xsmall'"
+              style="margin-top: 3px; margin: 4px"
               @click="editEmployee(employee)"
-              :customClass="'btn btn-success btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:pen" color="black" />
+              <template #icon>
+                <Icon name="uil:pen" color="black" />
+              </template>
             </custom-button>
             <custom-button
-              style="margin-top: 3px; margin:4px;"
+              :variant="'warning'"
+              :rounded="true"
+              :size="'xsmall'"
+              style="margin-top: 3px; margin: 4px"
               @click="viewEmployee(employee)"
-              :customClass="'btn btn-info btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:eye" color="black" />
+              <template #icon>
+                <Icon name="uil:eye" color="black" />
+              </template>
             </custom-button>
             <custom-button
-              style="margin-top: 3px; margin:4px;"
+              :variant="'danger'"
+              :rounded="true"
+              :size="'xsmall'"
+              style="margin-top: 3px; margin: 4px"
               @click="deleteEmployee(employee)"
-              :customClass="'btn btn-danger btn-sm'"
               :customType="'button'"
             >
-              <Icon name="uil:trash" color="black" />
+              <template #icon>
+                <Icon name="uil:trash" color="black" />
+              </template>
             </custom-button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="no-data" v-else>{{noDataMessage}}</div>
+    <div class="no-data" v-else>{{ noDataMessage }}</div>
   </div>
 </template>
 
@@ -73,13 +99,12 @@ const props = defineProps({
 });
 let showModal = ref(false);
 let customEmployee = ref({});
-let noDataMessage = ref("No employee found!")
+let noDataMessage = ref("No employee found!");
 const router = useRouter();
 const filtersStore = useFiltersStore();
 const deleteEmployee = (employee) => {
   showModal.value = true;
   customEmployee = employee;
-  console.log("employee", customEmployee);
   // filtersStore.deleteEmployee(employee.id)
 };
 const confirmDelete = (value) => {

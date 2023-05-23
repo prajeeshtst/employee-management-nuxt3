@@ -1,17 +1,29 @@
 <template>
   <div>
-    <span :class="customClass">
-      <slot>Default Slot</slot>
+    <span :class="`chip ${cChipClass}`" >
+      <slot name="icon" ></slot>
+       <span><slot></slot></span>
     </span>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  customClass: {
+  variant: {
+    default:"primary",
     type: String,
     required: true,
   },
+   disabled: {
+    default:false,
+    type: Boolean, 
+  },
+});
+const cChipClass = computed(() => {
+  const Cchip = ["c-chip"];
+  Cchip.push(`${props.variant}`);
+  props.disabled ? Cchip.push("disabled") : "";
+  return Cchip.join(" ");
 });
 </script>
 
@@ -33,6 +45,14 @@ const props = defineProps({
 }
 .chip.secondary {
   background: #b30202;
+  color: whitesmoke;
+}
+.chip.warning {
+  background: #ecde0e;
+  color: whitesmoke;
+}
+.chip.info {
+  background: #0e2fec;
   color: whitesmoke;
 }
 </style>

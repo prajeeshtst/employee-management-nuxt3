@@ -1,13 +1,73 @@
-:root{
+:root {
   --primary: #007bff;
-  --secondary : #6c757d; 
-  --success : #28a745;
-  --warning : #ffc107;
-  --danger : #dc3545;
-  --light : #f8f9fa;
-  --dark : #343a40;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
 }
 
-#__nuxt{
-  background: rgb(209, 213, 225);
+.xsmall {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.6rem;
+}
+.small {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+}
+
+.medium {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.large {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-none {
+  border-radius: 0;
+}
+.text-primary {
+  color: var(--primary);
+}
+.text-secondary {
+  color: var(--secondary);
+}
+.text-success {
+  color: var(--success);
+}
+.text-warning {
+  color: var(--warning);
+}
+.text-danger {
+  color: var(--danger);
+}
+
+/* colors */
+
+.primary {
+  color: #f8f9fa;
+  background-color: var(--primary);
+}
+.secondary {
+  color: #f8f9fa;
+  background-color: var(--secondary);
+}
+.success {
+  color: #f8f9fa;
+  background-color: var(--success);
+}
+.warning {
+  color: #f8f9fa;
+  background-color: var(--warning);
+}
+.danger {
+  color: #f8f9fa;
+  background-color: var(--danger);
 }

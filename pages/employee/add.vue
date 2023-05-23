@@ -54,6 +54,7 @@
           <custom-check-box
             :gender="['Male', 'Female']"
             :key="editMode"
+            :disabled="false"
             :editMode="editMode"
             v-model="employeeData.gender"
             :propData="employeeData.gender"

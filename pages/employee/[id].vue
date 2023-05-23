@@ -58,8 +58,7 @@ const filtersStore = useFiltersStore();
 const { customEmployee } = storeToRefs(filtersStore);
 
 onMounted(() => {
-  console.log(router.path);
-});
+ });
 </script>
 
 <style lang="scss" scoped>
