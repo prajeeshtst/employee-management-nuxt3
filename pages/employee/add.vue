@@ -1,7 +1,6 @@
 <template>
   <div class="table-title">
     {{ componentTitle }} Employee
-  
 
     <p class="sub-title">Employee Management</p>
     <div class="add-employee">
@@ -26,64 +25,83 @@
           <custom-label>Emp.ID</custom-label>
           <custom-text
             v-model="employeeData.id"
-            :propData="employeeData.id"
+            :editData="employeeData.id"
             :disableField="editMode"
             :key="editMode"
           ></custom-text>
         </div>
-        <div class="col-md-8">
-                   <custom-label>Name</custom-label>
+        <div class="col-md-4">
+          <custom-label>Name</custom-label>
           <custom-text
+            :placeholder="'Enter Name'"
             v-model="employeeData.name"
-            :propData="employeeData.name"
+            :editData="employeeData.name"
           ></custom-text>
+        </div>
+        <div class="col-md-4">
+          <custom-label>Email</custom-label>
+
+          <custom-text
+            :type="'email'"
+            :placeholder="'Enter Email'"
+            v-model="employeeData.email"
+            :editData="employeeData.email"
+          />
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
-                   <custom-label>Email</custom-label>
-
-          <email-field
-            v-model="employeeData.email"
-            :propData="employeeData.email"
+        <div class="col-md-6 skills">
+           <custom-label>Skills</custom-label>
+          <custom-check-box
+            :items="checkboxItems"
+            label="Skills"
+            checkClass="'checkbox-container'"
+            align="left"
+            :valuesSelected="employeeData.skills"
+            @update:selectedValues="handleSelectedValuesUpdate"
+            checkboxClass="custom-checkbox"
+            colour="#007bff"
           />
         </div>
-        <div class="col-md-5" style="margin-top: 42px">
-                    <custom-label>Gender</custom-label>
+        <div class="col-md-5" style="margin-top: 42px; margin-left: 85px;">
+          <custom-label>Gender</custom-label>
 
-          <custom-check-box
+          <custom-radio
             :gender="['Male', 'Female']"
             :key="editMode"
             :disabled="false"
             :editMode="editMode"
             v-model="employeeData.gender"
-            :propData="employeeData.gender"
+            :editData="employeeData.gender"
           />
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
           <custom-label>Status</custom-label>
-          <custom-select
+
+           <custom-select
             :key="editMode"
             :editMode="editMode"
             v-model="employeeData.status"
             :options="['Active', 'Disabled']"
-            :propData="employeeData.status"
+            :editData="employeeData.status"
           />
         </div>
         <div class="col-md-3">
           <custom-label>Designation</custom-label>
           <custom-text
+            :placeholder="'Enter Designation'"
             v-model="employeeData.designation"
-            :propData="employeeData.designation"
+            :editData="employeeData.designation"
           ></custom-text>
         </div>
         <div class="col-md-3">
           <custom-label>Team</custom-label>
           <custom-text
+            :placeholder="'Enter Team'"
             v-model="employeeData.team"
-            :propData="employeeData.team"
+            :editData="employeeData.team"
           ></custom-text>
         </div>
       </div>
@@ -91,26 +109,29 @@
         <div class="form-group">
           <custom-label>Address1</custom-label>
           <custom-text
+            :placeholder="'Enter Address1'"
             v-model="employeeData.address1"
-            :propData="employeeData.address1"
+            :editData="employeeData.address1"
           ></custom-text>
         </div>
         <div class="form-group">
           <custom-label>Address2</custom-label>
           <custom-text
+            :placeholder="'Enter Address2'"
             v-model="employeeData.address2"
-            :propData="employeeData.address2"
+            :editData="employeeData.address2"
           ></custom-text>
         </div>
         <div class="form-group col-md-6">
           <custom-label>City</custom-label>
           <custom-text
+            :placeholder="'Enter City'"
             v-model="employeeData.city"
-            :propData="employeeData.city"
+            :editData="employeeData.city"
           ></custom-text>
         </div>
       </div>
-       <custom-button
+      <custom-button
         :customClass="'btn btn-primary'"
         :customType="'submit'"
         style="margin-top: 1rem"
@@ -123,10 +144,7 @@
 
 <script setup>
 import { useFiltersStore } from "~/stores/test";
-import { storeToRefs } from "pinia";
-import customCheckBox from "~/components/customCheckBox.vue";
-import useCreateButtonState from "~/modules/buttonState";
-import useFormValidation from "~/modules/useFormValidation";
+import { storeToRefs } from "pinia"; 
 
 const router = useRouter();
 let employeeData = ref({
@@ -135,6 +153,7 @@ let employeeData = ref({
   email: null,
   gender: null,
   status: null,
+  skills: null,
   designation: null,
   address1: null,
   address2: null,
@@ -144,12 +163,12 @@ let employeeData = ref({
 
 const inputVal = ref("");
 let componentTitle = ref("Create");
+const checkboxItems = ref(["Vue","Nuxt","Nodejs"]);
 let editMode = ref(false);
 let customForm = ref(false);
+const selectedCheckboxValues = ref([]);
 const filtersStore = useFiltersStore();
-const { error } = useFormValidation();
-onMounted(() => {
-   
+ onMounted(() => {
   if (
     router.currentRoute &&
     router.currentRoute._value &&
@@ -163,18 +182,18 @@ onMounted(() => {
     componentTitle = "Edit";
     editMode.value = true;
     customForm = true;
-     
   }
 });
 
-const { isCreateButtonDisabled } = useCreateButtonState(
-  employeeData.value,
-  error
-);
-
  
+const handleSelectedValuesUpdate = (newValues) => {
+   selectedCheckboxValues.value = newValues;
+ 
+ };
 const addValueToEmployeeList = () => {
-   router.push("/");
+   employeeData.value.skills = selectedCheckboxValues.value
+   console.log('employeeData.value',employeeData.value)
+  router.push("/");
   editMode.value
     ? filtersStore.editValueToEmployeeList(employeeData.value)
     : filtersStore.addValueToEmployeeList(employeeData.value);
@@ -185,9 +204,7 @@ const goBack = () => {
 };
 const inputfrom = (event) => {
   employeeData.id = event.target.value;
- 
- };
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -229,5 +246,11 @@ const inputfrom = (event) => {
 }
 .custom-labels {
   margin-bottom: 4px;
+}
+.skills {
+  margin-top: 41px;
+}
+.row{
+  margin-top: 15px;
 }
 </style>

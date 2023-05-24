@@ -53,21 +53,21 @@
 
 .primary {
   color: #f8f9fa;
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
 }
 .secondary {
   color: #f8f9fa;
-  background-color: var(--secondary);
+  background-color: var(--secondary)!important;
 }
 .success {
   color: #f8f9fa;
-  background-color: var(--success);
+  background-color: var(--success)!important;
 }
 .warning {
   color: #f8f9fa;
-  background-color: var(--warning);
+  background-color: var(--warning)!important;
 }
 .danger {
   color: #f8f9fa;
-  background-color: var(--danger);
+  background-color: var(--danger)!important;
 }

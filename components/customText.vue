@@ -1,10 +1,11 @@
 <template>
     <input
-    type="text"
+    :type="text"
     class="form-control"
-    autocomplete="off"
+    :autocomplete="autocomplete"
     @input="$emit('update:modelValue', $event.target.value)"
     v-model="input"
+    :placeholder="placeholder"
     @keyup="validateInput"
     @blue="validateInput"
     :disabled="disableField"
@@ -12,21 +13,32 @@
   <show-field-error v-if="error" :error="error" />
 </template>
 <script setup>
-import useFormValidation from "~/modules/useFormValidation";
-const props = defineProps({
-  propData: String,
-  disableField:Boolean
+ const props = defineProps({
+  editData:{
+   type:String,
+   default:''
+  },
+  type:{
+    type:String,
+    required:true,
+    default: 'text'
+  },
+  autocomplete:{
+    type:Boolean,
+    required:true,
+    default:'off'
+  },
+  placeholder :{
+    type:String,
+    default:'Enter value',
+    required:true
+  },
+   disableField:{
+     type:Boolean,
+     required:true,
+     default:false}
 });
-let input = ref("");
+let input = ref(props.editData);
 let error = ref("");
-props.propData ? (input = props.propData) : "";
-const { validateNameField, errors } = useFormValidation();
-const validateInput = () => {
-  validateNameField("text", input.value);
-  return { input, errors, validateInput };
-};
-// const validateInput = () => {
-//   error.value = input.value === "" ? "The Input field is required" : "";
- //   return { input, error, validateInput };
-// };
+  
 </script>

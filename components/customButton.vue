@@ -6,7 +6,7 @@
     :style="style"
     :disabled="disabled"
   >
-  <slot name="icon"></slot>
+    <slot name="icon"></slot>
     <slot></slot>
   </button>
 </template>
@@ -26,24 +26,24 @@ const props = defineProps({
     type: Boolean,
   },
   onClick: {
-    required:true,
+    required: true,
     type: Function,
   },
   style: {
-    default:"",
+    default: "",
     type: String,
   },
   customType: {
-    default:"button",
+    default: "button",
     type: String,
   },
   disabled: {
-     default: false,
+    default: false,
     type: Boolean,
   },
 });
 
-  const customButtonClass = computed(() => {
+const customButtonClass = computed(() => {
   const cButton = ["c-button"];
   cButton.push(`${props.variant}`);
   cButton.push(`rounded-${props.rounded ? "full" : "none"}`);
@@ -52,21 +52,31 @@ const props = defineProps({
 });
 const customIconClass = computed(() => {
   const classes = ["c-button-icon"];
-  props.size==="small"||props.size === "xsmall" ?  classes.push("icon-small"):'';
+  props.size === "small" || props.size === "xsmall"
+    ? classes.push("icon-small")
+    : "";
   return classes.join(" ");
 });
 </script>
 <style>
-.button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
+.c-button {
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  border: 0.16em solid rgba(255, 255, 255, 0);
+  background-color: rgb(80, 10, 172);
+  border-radius: 2em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+  text-align: center;
+  transition: all 0.2s;
 }
+.c-button:hover {
+  border-color: rgb(255, 255, 255);
+}
+ 
 </style>

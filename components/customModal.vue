@@ -11,7 +11,8 @@
       <div class="modal-footer">
         <custom-button
           :onClick="confirm"
-          :customClass="'btn btn-primary'"
+          :variant="'primary'"
+          :rounded="true"
           :style="'font-size: 13px'"
           :customType="'button'"
         >
@@ -19,7 +20,8 @@
         >
         <custom-button
         :onClick="cancel"
-        :customClass="'btn btn-secondary'"
+        :variant="'secondary'"
+        :rounded="true"
         :style="'font-size: 13px'"
         :customType="'button'"
       >
@@ -33,11 +35,36 @@
 <script setup>
 
 const props = defineProps({
-  showModal:Boolean,
-  modalTitle : String ,
-  modalData: String,
-  confirmButton: String,
-  cancelButton: String
+  modalHeadingSize:{
+    required: true,
+    type: String,
+    default:'medium'
+  },
+  showModal:{
+    required:true,
+    type:Boolean,
+    default:false
+  },
+  modalTitle :{
+    required: true,
+    type: String,
+    default:'Modal Title'
+  },
+  modalData:{
+    required: true,
+    type: String,
+    default:'data'
+  },  
+  confirmButton:{
+    required: true,
+    type: String,
+    default:'Confirm'
+  }, 
+  cancelButton: {
+    required: true,
+    type: String,
+    default:'Cancel'
+  },
 })
 const emit = defineEmits(['confirmPopup','cancelPopup'])
 

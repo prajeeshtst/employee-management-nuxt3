@@ -1,12 +1,10 @@
 <template>
- <label for="inputEmail4" class="custom-labels"><slot></slot> </label>
-
+  <label for="inputEmail4" class="custom-labels">
+    <slot name="icon"></slot>
+    <slot></slot>
+  </label>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
