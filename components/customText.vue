@@ -12,7 +12,7 @@
   />
   <show-field-error v-if="error" :error="error" />
 </template>
-<script setup>
+<script setup lang="ts">
  const props = defineProps({
   editData:{
    type:String,

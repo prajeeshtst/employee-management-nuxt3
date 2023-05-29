@@ -142,7 +142,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useFiltersStore } from "~/stores/test";
 import { storeToRefs } from "pinia"; 
 

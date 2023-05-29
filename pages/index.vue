@@ -1,21 +1,51 @@
-<script setup>
+<script setup lang="ts">
 // import customTable from "../components/custom-table.vue";
 import { storeToRefs } from "pinia";
+import { useFiltersStore } from "~/stores/test";
+
 const router = useRouter();
 const tableHeadings = ref([
-  "ID",
-  "Name",
-  "Team",
-  "Designation",
-  "Status",
-  "Actions",
+  "id",
+  "name",
+  "team",
+  "designation",
+  "status",
+  "action"
 ]);
-import { useFiltersStore } from "~/stores/test";
+let showModal = ref(false);
+let customEmployee = ref({});
+let noDataMessage = ref("No employee found!");
 const filtersStore = useFiltersStore();
 
 const { filtersList } = storeToRefs(filtersStore);
 const addNewEmployee = () => {
   router.push("/employee/add");
+};
+ const deleteEmployee = (employee:any) => {
+  showModal.value = true;
+  customEmployee = employee;
+ };
+const confirmDelete = (value:any) => {
+  if (value) {
+    filtersStore.deleteEmployee(customEmployee.id);
+    showModal.value = false;
+  }
+};
+const closeModal = (value:any) => {
+  showModal.value = value;
+};
+const editEmployee = (emp:any) => {
+  router.push({
+    path: `/employee/add`,
+    query: { id: emp.id },
+  });
+};
+const viewEmployee = async (emp:any) => {
+  filtersStore.setCustomEmployee(emp);
+ 
+  router.push({
+    path: `/employee/${emp.id}`,
+  });
 };
 </script>
 
@@ -42,8 +72,17 @@ const addNewEmployee = () => {
       </custom-button>
     </div>
   </div>
-
+ <custom-modal
+      :showModal="showModal"
+      :modalTitle="'Confirmation'"
+      :modalData="`Are you sure want to delete ${customEmployee.name}`"
+      :confirmButton="'Yes'"
+      :cancelButton="'No'"
+      @confirmPopup="confirmDelete"
+      @cancelPopup="closeModal"
+    ></custom-modal>
   <div class="custom-container">
-    <custom-table :filtersList="filtersList" :headings="tableHeadings" />
+    <custom-table :filtersList="filtersList" :headings="tableHeadings" @deleteOnClick="deleteEmployee" @editOnClick="editEmployee" @viewOnClick="viewEmployee">
+    </custom-table>
   </div>
 </template>

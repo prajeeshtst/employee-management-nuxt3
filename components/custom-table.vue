@@ -1,57 +1,50 @@
 <template>
   <div>
-    <custom-modal
-      :showModal="showModal"
-      :modalTitle="'Confirmation'"
-      :modalData="`Are you sure want to delete ${customEmployee.name}`"
-      :confirmButton="'Yes'"
-      :cancelButton="'No'"
-      @confirmPopup="confirmDelete"
-      @cancelPopup="closeModal"
-    ></custom-modal>
+   
     <table class="table table-hover data-table" v-if="filtersList.length > 0">
       <thead>
         <tr>
           <th scope="col" v-for="(column, index) in headings" :key="index">
-            {{ column }}
+             
+            {{ column.toUpperCase() }}
           </th>
         </tr>
       </thead>
       <tbody>
+                      
+
         <tr v-for="employee in filtersList" :key="employee.id">
-          <td>{{ employee.id }}</td>
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.team }}</td>
-          <td>{{ employee.designation }}</td>
-          <td>
+           <td v-for="(column, indexColumn) in headings" :key="indexColumn">
+           <template v-if="column === 'status'">
             <Chip
               :variant="
-                employee.status === 'Active' ? 'primary' : 'chip secondary' "
+                employee[column] === 'Active' ? 'primary' : 'chip secondary' "
             >
               <template #icon>
                 <Icon
                   :name="
-                    employee.status === 'Active'
+                    employee[column] === 'Active'
                       ? 'wpf:online'
                       : 'icomoon-free:blocked'
                   "
                   color="white"
                 />
               </template>
+              
               <template #default>
                 <span>
-                  {{ employee.status }}
+                  {{ employee[column] }}
                 </span>
               </template>
             </Chip>
-          </td>
-          <td>
-            <custom-button
+          </template>
+          <template v-else-if="column ==='action'">
+ <custom-button
               :variant="'success'"
               :rounded="true"
               :size="'xsmall'"
               style="margin-top: 3px; margin: 4px"
-              @click="editEmployee(employee)"
+              @click="handleEdit(employee)"
               :customType="'button'"
             >
               <template #icon>
@@ -63,7 +56,7 @@
               :rounded="true"
               :size="'xsmall'"
               style="margin-top: 3px; margin: 4px"
-              @click="viewEmployee(employee)"
+              @click="handleView(employee)"
               :customType="'button'"
             >
               <template #icon>
@@ -73,16 +66,21 @@
             <custom-button
               :variant="'danger'"
               :rounded="true"
+              :isLoading="true"
               :size="'xsmall'"
               style="margin-top: 3px; margin: 4px"
-              @click="deleteEmployee(employee)"
+              @click="handleDelete(employee)"
               :customType="'button'"
             >
               <template #icon>
                 <Icon name="uil:trash" color="black" />
               </template>
             </custom-button>
+                
+              </template>
+          <template v-else>  {{ employee[column] }}</template>
           </td>
+           
         </tr>
       </tbody>
     </table>
@@ -90,46 +88,41 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useFiltersStore } from "~/stores/test";
 import { storeToRefs } from "pinia";
-const props = defineProps({
-  filtersList: Array,
-  headings: Array,
-});
+const emit = defineEmits(['deleteOnClick','editOnClick','viewOnClick']);
+interface CTable {
+		filtersList: Array<string>|[],
+		headings: Array<string>|[], 
+	}
+
+	const props = withDefaults(defineProps<CTable>(),{});
+//  const props = defineProps({
+//   filtersList:{
+//     type: Array,
+//     default: [],
+//     required: true
+//   },
+//   headings: {
+//     type:Array,
+//     default: [],
+//     required: true}
+// });
 let showModal = ref(false);
 let customEmployee = ref({});
 let noDataMessage = ref("No employee found!");
 const router = useRouter();
-const filtersStore = useFiltersStore();
-const deleteEmployee = (employee) => {
-  showModal.value = true;
-  customEmployee = employee;
-  // filtersStore.deleteEmployee(employee.id)
+const handleDelete = (event:any) => {
+  emit("deleteOnClick", event);
 };
-const confirmDelete = (value) => {
-  if (value) {
-    filtersStore.deleteEmployee(customEmployee.id);
-    showModal.value = false;
-  }
+const handleEdit = (event:any) => {
+  emit("editOnClick", event);
 };
-const closeModal = (value) => {
-  showModal.value = value;
+const handleView = (event:any) => {
+  emit("viewOnClick", event);
 };
-const editEmployee = (emp) => {
-  router.push({
-    path: `/employee/add`,
-    query: { id: emp.id },
-  });
-};
-const viewEmployee = async (emp) => {
-  filtersStore.setCustomEmployee(emp);
-  // const { setCustomEmployee } = filtersStore;
 
-  router.push({
-    path: `/employee/${emp.id}`,
-  });
-};
 </script>
 
 <style lang="scss" scoped>

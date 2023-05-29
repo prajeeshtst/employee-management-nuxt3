@@ -13,7 +13,7 @@
   </select>
 </template>
 
-<script setup>
+<script setup lang="ts">
  const props = defineProps({
   placeholder: {
     type:String, 
